@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authentication Form</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Nunito:600,700&display=swap');
+
+    :root {
+      --primary: #4D6FE5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Nunito', 'Roboto', Arial, sans-serif;
+      background: var(--primary);
+      height: 100vh;
+      margin: 0;
+    }
+
+    #app {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      text-align: center;
+      color: #fff;
+      margin-top: 100px;
+    }
+
+    .container > header {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0 auto 60px auto;
+      position: relative;
+      height: 25px;
+      width: 250px;
+      overflow: hidden;
+    }
+
+    .header-headings {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      width: 100%;
+      transition: all 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    }
+
+    .header-headings > span {
+      margin: 3px 0;
+    }
+
+    .header-headings.sign-in {
+      transform: translateY(0);
+    }
+
+    .header-headings.sign-up {
+      transform: translateY(-25px);
+    }
+
+    .header-headings.forgot {
+      transform: translateY(-50px);
+    }
+
+    .options {
+      display: flex;
+      align-items: center;
+      width: 350px;
+    }
+
+    @media screen and (max-width: 380px) {
+      .options {
+        width: 100%;
+      }
+    }
+
+    .options > li {
+      cursor: pointer;
+      opacity: 0.5;
+      transition: all 0.2s ease;
+    }
+
+    .options > li:hover,
+    .options > li.active {
+      opacity: 1;
+    }
+
+    .options > li:nth-of-type(2) {
+      margin-left: 15px;
+    }
+
+    .options > li:last-of-type {
+      margin-left: auto;
+    }
+
+    .account-form {
+      display: flex;
+      flex-direction: column;
+      margin-top: 30px;
+    }
+
+    .account-form-fields {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    }
+
+    .account-form-fields.sign-in {
+      max-height: 123px;
+    }
+
+    .account-form-fields.sign-up {
+      max-height: 250px;
+    }
+
+    .account-form-fields.forgot {
+      max-height: 61px;
+    }
+
+    .account-form-fields > input {
+      border: 0;
+      margin-bottom: 10px;
+      padding: 15px;
+      font-size: 1rem;
+      font-family: 'Nunito', sans-serif;
+      color: #000;
+      border-radius: 5px;
+    }
+
+    .account-form-fields > input::placeholder {
+      color: #aaa;
+    }
+
+    .account-form-fields > input::-webkit-input-placeholder {
+      color: #aaa;
+    }
+
+    .account-form-fields > input:-ms-input-placeholder {
+      color: #aaa;
+    }
+
+    .account-form-fields > input:focus {
+      outline: none;
+    }
+
+    .btn-submit-form {
+      border: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      cursor: pointer;
+      padding: 15px 0;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 1rem;
+      font-family: 'Nunito', sans-serif;
+      background: lighten(var(--primary), 5%);
+      box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.13);
+      transition: all 0.2s ease;
+    }
+
+    .btn-submit-form:hover {
+      background: darken(var(--primary), 2%);
+    }
+
+    .btn-submit-form:active,
+    .btn-submit-form:focus {
+      outline: none;
+      background: darken(var(--primary), 7%);
+    }
+
+    footer {
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      padding: 30px 0;
+      text-align: center;
+    }
+
+    footer > a {
+      color: #fff;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" class="container"></div>
+  <script>
+    function Form({ option }) {
+      return (
+        <form class="account-form" onSubmit={(evt) => evt.preventDefault()}>
+          <div class={'account-form-fields ' + (option === 1 ? 'sign-in' : (option === 2 ? 'sign-up' : 'forgot')) }>
+            <input id='email' name='email' type='email' placeholder='E-mail' required />
+            <input id='password' name='password' type='password' placeholder='Password' required={option === 1 || option === 2} disabled={option === 3} />
+            <input id='repeat-password' name='repeat-password' type='password' placeholder='Repeat password' required={option === 2} disabled={option === 1 || option === 3} />
+          </div>
+          <button class='btn-submit-form' type='submit'>
+            { option === 1 ? 'Sign in' : (option === 2 ? 'Sign up' : 'Reset password') }
+          </button>
+        </form>
+      );
+    }
+
+    function App() {
+      const [option, setOption] = React.useState(1);
+
+      return (
+        <div class='container'>
+          <header>
+            <div class={'header-headings ' + (option === 1 ? 'sign-in' : (option === 2 ? 'sign-up' : 'forgot')) }>
+              <span>Sign in to your account</span>
+              <span>Create an account</span>
+              <span>Reset your password</span>
+            </div>
+          </header>
+          <ul class='options'>
+            <li class={option === 1 ? 'active' : ''} onClick={() => setOption(1)}>Sign in</li>
+            <li class={option === 2 ? 'active' : ''} onClick={() => setOption(2)}>Sign up</li>
+            <li class={option === 3 ? 'active' : ''} onClick={() => setOption(3)}>Forgot</li>
+          </ul>
+          <Form option={option} />
+          <footer>
+            <a href='https://dribbble.com/shots/5041581-Zenbu-Sign-in-up-forgot-page' target='_blank' rel="noopener noreferrer">Original design with animations by Zenbu</a>
+          </footer>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('app'));
+  </script>
+</body>
+</html>
